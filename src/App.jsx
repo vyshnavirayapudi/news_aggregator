@@ -4,7 +4,6 @@ import CategoryFilter from "./components/CategoryFilter";
 import BreakingNews from "./components/BreakingNews";
 import NewsCard from "./components/NewsCard";
 import Loader from "./components/Loader";
-
 import useFetchNews from "./hooks/useFetchNews";
 
 function App() {
@@ -17,9 +16,9 @@ function App() {
     <div className="min-h-screen bg-gray-100">
       <Navbar setSearchQuery={setSearchQuery} />
 
-      <BreakingNews />
+      <BreakingNews headline="Welcome to NewsSphere — Your daily news, simplified." />
 
-      <CategoryFilter setCategory={setCategory} />
+      <CategoryFilter selectedCategory={category} setSelectedCategory={setCategory} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
         {loading ? (

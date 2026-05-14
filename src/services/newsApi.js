@@ -1,5 +1,5 @@
-const API_KEY = "YOUR_NEWS_API_KEY";
-const BASE_URL = "https://newsapi.org/v2";
+const API_KEY = "itrVtl2D5r2Xrv9PdCKouabkBzznpufNg19gf8nF";
+const BASE_URL = "https://api.thenewsapi.com/v1";
 
 export const fetchTopHeadlines = async ({
   category = "general",

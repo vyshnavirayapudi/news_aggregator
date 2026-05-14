@@ -3,8 +3,7 @@ import NewsCard from "../components/NewsCard";
 import BreakingNews from "../components/BreakingNews";
 import CategoryFilter from "../components/CategoryFilter";
 import Loader from "../components/Loader";
-
-const API_KEY = "YOUR_NEWS_API_KEY";
+import { fetchTopHeadlines } from "../services/newsApi";
 
 const Home = () => {
   const [articles, setArticles] = useState([]);
@@ -14,13 +13,8 @@ const Home = () => {
   const fetchNews = async () => {
     try {
       setLoading(true);
-
-      const response = await fetch(
-        `https://newsapi.org/v2/top-headlines?country=in&category=${category}&apiKey=${API_KEY}`
-      );
-
-      const data = await response.json();
-      setArticles(data.articles || []);
+      const data = await fetchTopHeadlines({ category });
+      setArticles(data);
     } catch (error) {
       console.error("Error fetching news:", error);
     } finally {
@@ -34,7 +28,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
-      <BreakingNews />
+      <BreakingNews headline={articles[0]?.title || "Stay updated with the latest news!"} />
 
       <CategoryFilter
         selectedCategory={category}
