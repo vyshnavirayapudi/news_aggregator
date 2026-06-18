@@ -1,25 +1,35 @@
 const API_KEY = "itrVtl2D5r2Xrv9PdCKouabkBzznpufNg19gf8nF";
-const BASE_URL = "https://api.thenewsapi.com/v1";
+const BASE_URL = "https://api.thenewsapi.com/v1/news";
 
 export const fetchTopHeadlines = async ({
   category = "general",
   page = 1,
   query = "",
-  country = "in",
+  locale = "",
 }) => {
   try {
-    let url = "";
+    // Default to English language filter (language=en) to prevent mixing languages.
+    // thenewsapi.com uses limit for page size and api_token for authentication.
+    let url = `${BASE_URL}/all?api_token=${API_KEY}&page=${page}&limit=10&language=en`;
 
     if (query) {
-      url = `${BASE_URL}/everything?q=${query}&page=${page}&pageSize=10&apiKey=${API_KEY}`;
-    } else {
-      url = `${BASE_URL}/top-headlines?country=${country}&category=${category}&page=${page}&pageSize=10&apiKey=${API_KEY}`;
+      url += `&search=${encodeURIComponent(query)}`;
+    } else if (category) {
+      url += `&categories=${category}`;
+    }
+
+    if (locale) {
+      url += `&locale=${locale}`;
     }
 
     const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
     const data = await response.json();
 
-    return data.articles || [];
+    // thenewsapi.com returns results under "data" array
+    return data.data || [];
   } catch (error) {
     console.error("Error fetching news:", error);
     return [];
